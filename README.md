@@ -4,7 +4,7 @@ A Markdown editor with preview for Sanity Studio. Supports Github flavored markd
 ## Installation
 
 ```
-sanity install markdown
+sanity install markdown-full
 ```
 
 ## Usage
