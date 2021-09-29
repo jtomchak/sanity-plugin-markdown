@@ -25,7 +25,7 @@ const myDocument = {
 ```
 ### Demo
 
-![demo](https://user-images.githubusercontent.com/38528/113196621-91ec8780-9218-11eb-86cc-cf0adfa2fd01.gif)
+![Demo](https://user-images.githubusercontent.com/76360/135316429-f5bb1fea-a925-4721-9dfa-d693091ae8d1.gif)
 
 
 ## License
