@@ -1,7 +1,7 @@
 {
-  "name": "sanity-plugin-markdown",
-  "version": "2.0.2",
-  "description": "Markdown fields in Sanity Studio. Supports Github flavored Markdown and image uploads.",
+  "name": "sanity-plugin-markdown-full",
+  "version": "2.1.0",
+  "description": "Markdown fields in Sanity Studio. Supports Github flavored Markdown and image uploads. And full screen",
   "scripts": {
     "build": "sanipack build",
     "watch": "sanipack build --watch",
@@ -51,10 +51,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sanity-io/sanity-plugin-markdown.git"
+    "url": "git@github.com:jtomchak/sanity-plugin-markdown.git"
   },
   "bugs": {
-    "url": "https://github.com/sanity-io/sanity-plugin-markdown/issues"
+    "url": "https://github.com/jtomchak/sanity-plugin-markdown/issues"
   },
   "homepage": "https://sanity.io"
 }
