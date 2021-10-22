@@ -14,7 +14,7 @@ import {BoundaryElementProvider, Layer, Portal, PortalProvider} from '@sanity/ui
 import useDebounce from '../hooks/useDebounce'
 
 import './mde-editor.css?raw'
-import 'react-mde/lib/styles/css/react-mde-preview.css?raw'
+import './mde-preview.css?raw'
 import 'react-mde/lib/styles/css/react-mde-suggestions.css?raw'
 import 'react-mde/lib/styles/css/react-mde-toolbar.css?raw'
 import 'react-mde/lib/styles/css/react-mde.css?raw'
@@ -96,7 +96,9 @@ export default function Editor(props) {
             },
           }}
           classes={{
-            reactMde: classNames('editorBoxContent'),
+            reactMde: classNames('editorBoxContent', {
+              previewContainer: selectedTab === 'preview' && !isFullscreen,
+            }),
           }}
           paste={{saveImage}}
         />
