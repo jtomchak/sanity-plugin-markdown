@@ -17,7 +17,9 @@
   "author": "Sanity.io <hello@sanity.io>",
   "license": "MIT",
   "dependencies": {
-    "@sanity/ui": "^0.36.11",
+    "@reach/auto-id": "^0.16.0",
+    "@sanity/base": "^2.27.0",
+    "@sanity/ui": "^0.37.5",
     "classnames": "^2.3.1",
     "react-markdown": "^5.0.3",
     "react-mde": "^11.5.0",
@@ -32,6 +34,7 @@
     "sanipack": "^2.0.1"
   },
   "peerDependencies": {
+    "@sanity/base": "^2.27.0",
     "react": "^17.0.0"
   },
   "prettier": {

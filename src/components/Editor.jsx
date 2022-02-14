@@ -3,13 +3,14 @@ import ReactMde from 'react-mde'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import classNames from 'classnames'
+import {useId} from '@reach/auto-id'
 import {uniqueId} from 'lodash'
 
 import PatchEvent, {set, unset} from 'part:@sanity/form-builder/patch-event'
 import sanityClient from 'part:@sanity/base/client'
 
-import Fieldset from 'part:@sanity/components/fieldsets/default'
-import {BoundaryElementProvider, Layer, Portal, PortalProvider} from '@sanity/ui'
+import {FormField} from '@sanity/base/components'
+import {BoundaryElementProvider, Layer, Portal, PortalProvider, usePortal} from '@sanity/ui'
 
 import useDebounce from '../hooks/useDebounce'
 
@@ -32,26 +33,31 @@ const defaultToolbarCommands = [
   ['unordered-list', 'ordered-list', 'checked-list'],
 ]
 
-export default function Editor(props) {
-  const {type, value} = props
+export default React.forwardRef(function Editor(props, ref) {
+  const {type, value = '', markers, onBlur, onChange, onFocus, presence, readOnly} = props
   const {options = {}} = type
   const activationId = React.useMemo(() => uniqueId('MarkdownInput'), [])
 
   const [isFullscreen, setIsFullscreen] = React.useState(false)
-  const [portalElement, setPortalElement] = React.useState(null)
+  const portalElement = usePortal()
   const [scrollContainerElement, setScrollContainerElement] = React.useState(null)
 
   const [selectedTab, setSelectedTab] = React.useState('write')
   const [editedValue, setEditedValue] = React.useState(value)
   const debouncedValue = useDebounce(editedValue, 100)
-
+  const textarea = React.useRef()
   const handleToggleFullscreen = () => setIsFullscreen(!isFullscreen)
 
   React.useEffect(() => {
-    setEditedValue(value)
+    if (value) {
+      setEditedValue(value)
+    }
   }, [value])
 
   React.useEffect(() => {
+    // Don't trigger a patch if both values are ''
+    if (!debouncedValue && !value) return
+
     if (!debouncedValue || debouncedValue === '') {
       props.onChange(PatchEvent.from([unset()]))
     } else if (debouncedValue !== value) {
@@ -91,6 +97,11 @@ export default function Editor(props) {
           minEditorHeight={isFullscreen ? '100vh' : '500'}
           generateMarkdownPreview={(markdown) => Promise.resolve(<Preview markdown={markdown} />)}
           childProps={{
+            textArea: {
+              id: inputId,
+              onBlur,
+              onFocus,
+            },
             writeButton: {
               tabIndex: -1,
             },
@@ -101,25 +112,30 @@ export default function Editor(props) {
             }),
           }}
           paste={{saveImage}}
+          refs={{textarea}}
         />
       </>
     ),
     [editedValue, selectedTab, saveImage, isFullscreen]
   )
-
+  // Generate a random ID to link our FormField label and input component
+  const inputId = useId()
   return (
-    <Fieldset
-      markers={props.markers}
-      presence={props.presence}
-      legend={props.type.title}
-      description={props.type.description}
-      level={props.level}
+    <FormField
+      description={type.description} // Creates description from schema
+      inputId={inputId} // A unique ID for this input
+      title={type.title} // Creates label from schema title
+      __unstable_markers={markers} // Handles all markers including validation
+      __unstable_presence={presence} // Handles presence avatars
     >
       {isFullscreen && (
         <Portal key={`portal-${activationId}`}>
           <PortalProvider element={portalElement}>
             <BoundaryElementProvider element={scrollContainerElement}>
-              <Layer className={classNames(styles.fullscreenPortal, styles.editorWrapper)}>
+              <Layer
+                ref={ref}
+                className={classNames(styles.fullscreenPortal, styles.editorWrapper)}
+              >
                 {mdEditor}
               </Layer>
             </BoundaryElementProvider>
@@ -127,6 +143,6 @@ export default function Editor(props) {
         </Portal>
       )}
       {!isFullscreen && mdEditor}
-    </Fieldset>
+    </FormField>
   )
-}
+})
