@@ -1,6 +1,6 @@
 {
   "name": "sanity-plugin-markdown-full",
-  "version": "2.1.3",
+  "version": "2.2.0",
   "description": "Markdown fields in Sanity Studio. Supports Github flavored Markdown and image uploads. And full screen",
   "scripts": {
     "build": "sanipack build",
